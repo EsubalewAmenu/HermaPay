@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.gallery.GalleryFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+
+        <Button
+            android:id="@+id/btnpay_reward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="pay Reward"
+            tools:layout_editor_absoluteX="230dp"
+            tools:layout_editor_absoluteY="16dp" />
+
+        <Button
+            android:id="@+id/btnStartPaying"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pay"
+            tools:layout_editor_absoluteX="443dp"
+            tools:layout_editor_absoluteY="18dp"
+            android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/btnPaidList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Paid"
+            tools:layout_editor_absoluteX="443dp"
+            tools:layout_editor_absoluteY="18dp" />
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/order_reward_list"
+        android:layout_width="547dp"
+        android:layout_height="737dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintTop_toBottomOf="@+id/button2"
+        tools:layout_editor_absoluteX="5dp" />
+</LinearLayout>
