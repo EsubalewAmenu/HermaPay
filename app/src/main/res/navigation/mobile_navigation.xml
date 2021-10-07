@@ -22,4 +22,11 @@
         android:name="com.herma.apps.hermapay.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
+
+
+    <fragment
+        android:id="@+id/nav_activator"
+        android:name="com.herma.apps.hermapay.ui.activator.ActivatorFragment"
+        android:label="@string/menu_activator"
+        tools:layout="@layout/fragment_activator" />
 </navigation>
