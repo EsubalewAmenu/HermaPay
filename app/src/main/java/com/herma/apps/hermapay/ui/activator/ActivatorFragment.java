@@ -53,20 +53,18 @@ import javax.net.ssl.X509TrustManager;
 
 public class ActivatorFragment extends Fragment {
 
-    EditText etName;
-    EditText etPhone;
-    EditText etMac;
-    static EditText etPaidDate;
-    EditText etAmount;
-    EditText etReference;
-    EditText etLength;
-    TextView tvResult;
+    static EditText etName, etPhone, etMac, etPaidDate, etAmount, etReference, etLength;
+    static TextView tvResult;
     Button btnRegister, btnShare, btn_pick_paid_date, pick_reward_paid_date;
 
-    Spinner spBank, spLenght, spLicenseType, spRewardByBank;
-    EditText etInvitedBy, etrewardAmount, etRewardPaidDate;
+    static Spinner spBank, spLenght, spLicenseType, spRewardByBank;
+    static EditText etInvitedBy, etrewardAmount, etRewardPaidDate;
 
     static Calendar cal = Calendar.getInstance();
+
+    static String out_date_will_be = "";
+
+    String BASEURL = "https://datascienceplc.com/api/";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -178,39 +176,13 @@ public class ActivatorFragment extends Fragment {
 
 
 
-//                String BASEURL = "https://192.168.8.102:8082/wp/ds/api/DSACTIVATOR/v1/";
-//                String BASEURL = "https://192.168.8.102:8082/wp/ds/wp-json/DSACTIVATOR/v1/";
+                String url = "DSACTIVATOR/v1/register/payment?service_id=1";
 
-                String BASEURL = "https://datascienceplc.com/wp-json/DSACTIVATOR/v1/";
-
-                String url = "register/payment?service_id=1";
-
-//                Button pick_reward_paid_date;
-//                Spinner spRewardByBank;
-//                EditText etInvitedBy, etrewardAmount, etRewardPaidDate;
-
-                try{
-//                    System.out.println("Exp date is " + etPaidDate.getText().toString());
-//
-//                    System.out.println("Exp is " + exp_date);
-
-                    if(spLenght.getSelectedItemId() == 0) {
-//                        exp_date.setMonth( ( exp_date.getMonth() + Integer.parseInt(etLength.getText().toString())) );
-
-                        cal.add(Calendar.MONTH, Integer.parseInt(etLength.getText().toString()) );
-                    }
-                    else if(spLenght.getSelectedItemId() == 1) {
-                        cal.add(Calendar.YEAR, Integer.parseInt(etLength.getText().toString()) );
-                    }
-
-//                    System.out.println("Final xp date is " + exp_date);
-
-                }catch (Exception Klk) {System.out.println("klsdjf"+Klk); }
 
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, BASEURL+url+
                         "&license_code=" + random+ "&license_type="+(spLicenseType.getSelectedItemId()+1)+
                         "&amount="+etAmount.getText().toString()+"&paid_date="+etPaidDate.getText().toString()+
-                        "&out_date="+cal.get(Calendar.YEAR)+"-"+(cal.get(Calendar.MONTH) + 1)+"-"+cal.get(Calendar.DAY_OF_MONTH)+
+                        "&out_date="+out_date_will_be+
                         "&reference="+etReference.getText().toString()+"&paid_by="+(spBank.getSelectedItemId()+1)+"" +
                         "&mac="+etMac.getText().toString().toUpperCase(),
 
@@ -237,15 +209,18 @@ public class ActivatorFragment extends Fragment {
 
                                             jsonObj = new JSONObject(jsonObj.getString("activator"));
 
-                                            verif_customer_rewards = " Customer ID - " + jsonObj.getString("mac") +
-                                                    "\n\n Name - " + jsonObj.getString("name") +
-                                                    "\n phone - " + jsonObj.getString("phone") +
-                                                    "\n  Activation Code - " + jsonObj.getString("license_code") +
-                                                    "\n  License type - " + jsonObj.getString("license_type") +
-                                                    "\n\n Issued at - " + jsonObj.getString("paid_date")+
+                                            verif_customer_rewards = " ID - " + jsonObj.getString("mac") +
+                                                    "\n  Activation Code/ኮድ  - " + jsonObj.getString("license_code") +
+                                                    "\n  License type - ";
+
+                                            if(jsonObj.getString("license_type").equals("1")) verif_customer_rewards += "Silver";
+                                            else if(jsonObj.getString("license_type").equals("2")) verif_customer_rewards += "Gold";
+
+                                            verif_customer_rewards += "\n\n Issued at - " + jsonObj.getString("paid_date")+
                                                     "\n\n Expire Date - " + jsonObj.getString("out_date")+
-                                                    "\n\n Reference - " + jsonObj.getString("reference")+
-                                                    "\n\n#Thank_you for choosing us!";
+                                                    "\n\n1-12 Textbook አፕልኬይሽን ላይ አስገብተው ከተመዘገቡ ቡሃላ አፕልኬይሽኑን ዘግተው ይክፈቱ።\n" +
+                                                    "\n" +
+                                                    "እናመሰግናለን።";
 
                                             btnShare.setVisibility(View.VISIBLE);
 
@@ -266,8 +241,9 @@ public class ActivatorFragment extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         try{
-                            System.out.println("That didn't work! pls try again" + error);
+//                            System.out.println("That didn't work! pls try again" + error);
                             Toast.makeText(getContext(), "That didn't work! pls try again" + error, Toast.LENGTH_SHORT).show();
+                            tvResult.setText("That didn't work! pls try again" + error);
 
                         }catch (Exception j){}
                     }
@@ -323,17 +299,29 @@ public class ActivatorFragment extends Fragment {
 
             etPicked.setText(year+"-"+(month+1)+"-"+day);
 
-//            System.out.println("setted year is " + cal.get(Calendar.YEAR));
-//            System.out.println("setted year is " + cal.get(Calendar.MONTH));
-//            System.out.println("setted year is " + cal.get(Calendar.DAY_OF_MONTH));
-//            System.out.println("setted year is " + cal.get(Calendar.DATE ));
+
+            try{
+//                    System.out.println("Exp date is " + etPaidDate.getText().toString());
 //
-//            cal.add(Calendar.MONTH, 3);
-//
-//            System.out.println("setted year is " + cal.get(Calendar.YEAR));
-//            System.out.println("setted year is " + cal.get(Calendar.MONTH));
-//            System.out.println("setted year is " + cal.get(Calendar.DAY_OF_MONTH));
-//            System.out.println("setted year is " + cal.get(Calendar.DATE ));
+//                    System.out.println("Exp is " + exp_date);
+
+                if(spLenght.getSelectedItemId() == 0) {
+//                        exp_date.setMonth( ( exp_date.getMonth() + Integer.parseInt(etLength.getText().toString())) );
+
+                    cal.add(Calendar.MONTH, Integer.parseInt(etLength.getText().toString()) );
+                }
+                else if(spLenght.getSelectedItemId() == 1) {
+                    cal.add(Calendar.YEAR, Integer.parseInt(etLength.getText().toString()) );
+                }
+
+                out_date_will_be = cal.get(Calendar.YEAR)+"-"+(cal.get(Calendar.MONTH) + 1)+"-"+cal.get(Calendar.DAY_OF_MONTH);
+                tvResult.setText("out_date="+ out_date_will_be );
+//                    System.out.println("Final xp date is " + exp_date);
+
+            }catch (Exception Klk) {System.out.println("klsdjf"+Klk);
+
+                tvResult.setText("Error on conversion =" + Klk);
+            }
 
         }
     }

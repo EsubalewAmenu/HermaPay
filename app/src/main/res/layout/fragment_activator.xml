@@ -43,7 +43,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="Mac"
-        android:inputType="textPersonName" />
+        android:inputType="textCapSentences" />
 
 
         <Spinner
@@ -88,7 +88,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Length"
-            android:inputType="textPersonName" />
+            android:inputType="number" />
 
         <Spinner
             android:id="@+id/spLenght"
